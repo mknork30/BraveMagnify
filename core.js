@@ -14,7 +14,7 @@ document.addEventListener('mousemove', (e) => {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Control' && !popup) {
         
-        // THE DIV BYPASSER: Get every element under the cursor from top to bottom
+        // Get every element under the cursor from top to bottom
         const elementsUnderCursor = document.elementsFromPoint(mouseX, mouseY);
         
         // Find the first image element in that stack
@@ -37,13 +37,13 @@ function openMagnifier(src, fallbackSrc) {
     scale = 1; translateX = 0; translateY = 0; rotation = 0;
 
     popup = document.createElement('div');
-    popup.id = 'edge-mag-popup';
+    popup.id = 'brave-mag-popup';
 
     const img = document.createElement('img');
-    img.id = 'edge-mag-img';
+    img.id = 'brave-mag-img';
     img.src = src;
     
-    // Graceful fallback if the AI's rule generates a broken link
+    // Graceful fallback in case of a broken link in the rules engine
     img.onerror = () => {
         if (img.src !== fallbackSrc) {
             console.log("High-res load failed, falling back to original source.");
@@ -53,14 +53,18 @@ function openMagnifier(src, fallbackSrc) {
 
     popup.appendChild(img);
 
+    const closeBtn = createBtn('X', () => closeMagnifier());
+    closeBtn.className = 'brave-mag-btn-close';
+    popup.appendChild(closeBtn);
+
     const controls = document.createElement('div');
-    controls.id = 'edge-mag-controls';
+    controls.id = 'brave-mag-controls';
 
     controls.append(
         createBtn('−', () => adjustZoom(-0.25)),
-        createBtn('↺', resetTransform),
+        createBtn('↺', () => rotateImage('left')),
         createBtn('+', () => adjustZoom(0.25)),
-        createBtn('⟳', rotateImage)
+        createBtn('⟳', () => rotateImage())
     );
     
     popup.append(controls);
@@ -68,13 +72,13 @@ function openMagnifier(src, fallbackSrc) {
 
     // Interactivity
     popup.addEventListener('wheel', (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         adjustZoom(e.deltaY > 0 ? -0.15 : 0.15);
     }, { passive: false });
 
     img.addEventListener('mousedown', (e) => {
-        if (e.button !== 0) return; 
-        e.preventDefault(); 
+        if (e.button !== 0) return;
+        e.preventDefault();
         isDragging = true;
         startX = e.clientX - translateX;
         startY = e.clientY - translateY;
@@ -94,19 +98,20 @@ function openMagnifier(src, fallbackSrc) {
 
 function adjustZoom(amount) {
     scale = Math.max(0.2, Math.min(scale + amount, 6));
-    const img = document.getElementById('edge-mag-img');
+    const img = document.getElementById('brave-mag-img');
     if (img) updateTransform(img);
 }
 
-function rotateImage() {
-    rotation += 90;
-    const img = document.getElementById('edge-mag-img');
+function rotateImage(direction) {
+    if (direction === 'left') rotation -= 90;
+    else { rotation += 90; }
+    const img = document.getElementById('brave-mag-img');
     if (img) updateTransform(img);
 }
 
 function resetTransform() {
     scale = 1; translateX = 0; translateY = 0; rotation = 0;
-    const img = document.getElementById('edge-mag-img');
+    const img = document.getElementById('brave-mag-img');
     if (img) updateTransform(img);
 }
 
@@ -116,7 +121,7 @@ function updateTransform(img) {
 
 function createBtn(text, onClick) {
     const btn = document.createElement('button');
-    btn.className = 'edge-mag-btn';
+    btn.className = 'brave-mag-btn';
     btn.innerText = text;
     btn.onmousedown = (e) => e.stopPropagation(); 
     btn.onclick = onClick;
