@@ -3,13 +3,18 @@
   "name": "Brave Magnify",
   "version": "4.0",
   "description": "Press Ctrl over an image to open a floating, zoomable mini-window.",
-  "permissions": ["activeTab"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [],
+  "host_permissions": [ "<all_urls>" ],
+  "web_accessible_resources": [
+    {
+      "resources": [ "styles.css" ],
+      "matches": [ "<all_urls>" ]
+    }
+  ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "css": ["styles.css"],
-      "js": ["rules.js", "core.js"] 
+      "matches": [ "<all_urls>" ],
+      "js": [ "rules.js", "core.js" ]
     }
   ]
 }
