@@ -1,0 +1,73 @@
+#edge-mag-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+  z-index: 2147483647;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  max-width: 80vw;
+  max-height: 80vh;
+  min-width: 300px;
+  min-height: 200px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+#edge-mag-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  /* Smooth transitions for zoom and rotate */
+  transition: transform 0.15s ease-out; 
+  cursor: grab;
+}
+
+#edge-mag-img:active {
+  cursor: grabbing;
+}
+
+#edge-mag-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  padding: 30px 15px 15px 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  /* Prevent clicks on the background of the control bar from closing the popup */
+  pointer-events: none; 
+}
+
+#edge-mag-popup:hover #edge-mag-controls {
+  opacity: 1;
+}
+
+.edge-mag-btn {
+  pointer-events: auto; /* Re-enable clicks for the actual buttons */
+  background: rgba(40, 40, 40, 0.9);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.edge-mag-btn:hover {
+  background: rgba(80, 80, 80, 0.9);
+}
