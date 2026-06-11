@@ -1,16 +1,16 @@
-// core.js - The UI and X-Ray Vision Engine
+// core.js
 let popup = null;
 let scale = 1, translateX = 0, translateY = 0, rotation = 0;
 let isDragging = false, startX, startY;
 
-// Track mouse coordinates constantly
+// Track mouse coordinates
 let mouseX = 0, mouseY = 0;
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX; 
     mouseY = e.clientY;
 });
 
-// Listen for Ctrl key + X-Ray Vision Bypasser
+// Listener for Ctrl key
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Control' && !popup) {
         
