@@ -13,7 +13,7 @@ A Chromium extension that provides a persistent, interactive modal for magnifyin
 ## Installation
 
 1. Clone or download this repository.
-2. Navigate to `chrome://extensions/` in any Chromium-based browser.
+2. Navigate to `chrome://extensions/` (or the equivalent in any Chromium-based browser).
 3. Enable **Developer mode**.
 4. Click **Load unpacked** and select the repository directory.
 
