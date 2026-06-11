@@ -3,7 +3,8 @@
 A Chromium extension that provides a persistent, interactive modal for magnifying images on hover. It runs entirely on vanilla JavaScript.
 
 ## Features
-  - **Interactive Modal:** Triggered by hovering over an image and pressing `Ctrl`. Supports scroll-wheel zooming, click-and-drag panning, and rotation.
+  - **Interactive Modal:** Triggered by hovering over an image and double-tapping the `Ctrl` key (within 250ms). Supports scroll-wheel zooming, click-and-drag panning, and rotation.
+  - **CSS Encapsulation:** The UI is injected into a Shadow Root, ensuring that aggressive host-website CSS rules never warp, hide, or break the magnifier's layout or buttons.
   - **Dynamic Sizing:** Automatically adjusts the modal container to the image dimensions (up to 90% of the viewport) and enforces a minimum width for small images.
   - **Overlay Detection:** Uses `document.elementsFromPoint` to detect `<img>` tags positioned underneath transparent HTML elements.
   - **Standard Context Menu:** Images render natively in the DOM, allowing standard right-click actions (copy/save) without CORS restrictions.
@@ -36,7 +37,7 @@ window.MagnifierRules = {
 
 ```text
 manifest.json       # Manifest V3 configuration
-styles.css          # Modal, animation, and control styling
-core.js             # Event listeners, DOM detection, and UI rendering
+styles.css          # Modal, animation, and control styling (Loaded via Web Accessible Resources)
+core.js             # Event listeners, Shadow DOM injection, and UI rendering
 rules.js            # URL-rewriting dictionary for specific domains
 ```
