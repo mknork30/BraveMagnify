@@ -35,11 +35,12 @@ document.addEventListener('keydown', (e) => {
             // Find the first image element in that stack
             const targetImg = elementsUnderCursor.find(el => el.tagName === 'IMG');
 
-            // Declare finalSrc here, so it stays alive for openMagnifier()
             let finalSrc = null;
+            let fallbackSrc = null;
 
             if (targetImg) {
                 finalSrc = window.getBestImageSrc(targetImg);
+                fallbackSrc = targetImg.src;
             } else {
                 // Check if any element under the cursor has a background image
                 const bgElement = elementsUnderCursor.find(el => {
@@ -50,11 +51,12 @@ document.addEventListener('keydown', (e) => {
                 if (bgElement) {
                     const bg = window.getComputedStyle(bgElement).backgroundImage;
                     finalSrc = bg.slice(5, -2); // Extracts the URL from 'url("...")'
+                    fallbackSrc = finalSrc;
                 }
             }
 
             if (finalSrc) {
-                openMagnifier(finalSrc, finalSrc);
+                openMagnifier(finalSrc, fallbackSrc);
             }
 
         } else {
@@ -94,17 +96,21 @@ function openMagnifier(src, fallbackSrc) {
     const img = document.createElement('img');
     img.id = 'brave-mag-img';
 
+    // Instantly display the low-res thumbnail
     img.src = fallbackSrc;
 
-    if (src !== fallbackSrc) {
+    if (src && src !== fallbackSrc) {
         const highRes = new Image();
         highRes.onload = () => {
             img.src = src;
         };
+        highRes.onerror = () => {
+            console.log("High-res load failed, keeping original source.");
+        };
         highRes.src = src;
     }
 
-    // Graceful fallback in case of a broken link in the rules engine
+    // Main image onerror fallback (in case fallbackSrc fails)
     img.onerror = () => {
         if (img.src !== fallbackSrc) {
             console.log("High-res load failed, falling back to original source.");
